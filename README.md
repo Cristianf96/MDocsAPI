@@ -1,7 +1,5 @@
 # MDocsAPI
 
-# MDocsAPI
-
 ## Descripción
 
 MDocsAPI es una API personal diseñada para gestionar documentos de manera eficiente y segura.
