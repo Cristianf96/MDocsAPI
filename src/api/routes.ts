@@ -11,7 +11,7 @@ routes.get("/", (_, res) => {
 
 routes.use("/mssql", Mssql);
 
-routes.use((req, res) => {
+routes.use((_, res) => {
   res.status(404).send({
     error: "Not Found",
     message: "The requested resource was not found on this server.",
