@@ -17,7 +17,7 @@
   "author": "Cristian Badillo",
   "developer": "Cristian Badillo https://www.linkedin.com/in/cristian-barragan-ab9149225/",
   "license": "ISC",
-  "description": "",
+  "description": "MDocsAPI es una API RESTful desarrollada con Node.js y TypeScript, diseñada para gestionar y consultar información en una base de datos, generando una respuesta con el diccionario de esta misma.",
   "dependencies": {
     "@types/helmet": "^0.0.48",
     "@types/morgan": "^1.9.9",
