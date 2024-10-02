@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - main
+      - dev
   pull_request:
     branches:
       - main
+      - dev
 
 jobs:
   test:
@@ -35,3 +37,7 @@ jobs:
       - name: Upload Coverage
         if: success()
         run: npm run test:coverage
+
+      - name: Fail if tests fail
+        if: failure()
+        run: exit 1

@@ -63,7 +63,7 @@ const init = async () => {
       console.log(`------------------------`);
       console.log(EWelcomeMessage.welcomeApi);
       console.log(
-        `${EWelcomeMessage.serverOn} ${app.get("port")} i${
+        `${EWelcomeMessage.serverOn} ${app.get("port")} ${
           EWelcomeMessage.inVersion
         } ${version} \n`
       );
