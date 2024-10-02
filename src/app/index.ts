@@ -10,6 +10,11 @@ import { version } from "../../package.json";
 import { corsOptions } from "@app/utils/cors";
 import { swaggerSpec, swaggerUi } from "@app/app/swagger";
 import routes from "@app/api/routes";
+import {
+  EHttpStatusCode,
+  EHttpStatusMessage,
+  EWelcomeMessage,
+} from "@app/utils/constants/Enums";
 
 const app = express();
 app.set("port", process.env.PORT ?? 3000);
@@ -39,7 +44,7 @@ app.use(bodyParser.json({ limit: "50mb" }));
 
 // Routes
 app.get("/", (_req, res) => {
-  res.send(`Welcome to MDocs API in version ${version}`);
+  res.send(`${EWelcomeMessage.welcomeFront} ${version}`);
 });
 
 app.use("/api/v1", cors(corsOptions), routes);
@@ -48,7 +53,7 @@ app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Middleware para manejar rutas no encontradas
 app.use((_req, res, next) => {
-  res.status(404).send("Not Found");
+  res.status(EHttpStatusCode.NOT_FOUND).send(EHttpStatusMessage.NOT_FOUND);
   next();
 });
 
@@ -56,9 +61,11 @@ const init = async () => {
   try {
     app.listen(app.get("port"), () => {
       console.log(`------------------------`);
-      console.log(`Welcome to MDocs API`);
+      console.log(EWelcomeMessage.welcomeApi);
       console.log(
-        `Server running on port ${app.get("port")} in version ${version} \n`
+        `${EWelcomeMessage.serverOn} ${app.get("port")} i${
+          EWelcomeMessage.inVersion
+        } ${version} \n`
       );
       console.log(`Api URL: http://localhost:${app.get("port")}/api/v1`);
       console.log(`Doc URL: http://localhost:${app.get("port")}/docs`);

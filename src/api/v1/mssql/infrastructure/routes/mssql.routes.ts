@@ -1,7 +1,6 @@
 import { Router } from "express";
+import { mssqlController } from "@api/mssql/infrastructure/services/mssql.services";
 
 export const routesMssql = Router();
 
-routesMssql.post("/", (_, res) => {
-  res.send("routesMssql");
-});
+routesMssql.get("/", mssqlController.createDictionaryCtrl);
