@@ -16,7 +16,7 @@ import {
   EWelcomeMessage,
 } from "@app/utils/constants/Enums";
 
-const app = express();
+export const app = express();
 app.set("port", process.env.PORT ?? 3000);
 
 app.use(cors(corsOptions));
