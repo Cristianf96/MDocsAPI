@@ -75,21 +75,31 @@ export class MssqlRepository implements IMssqlRepository {
         { type: QueryTypes.SELECT }
       );
 
-      // console.log({ getTables, getColumns });
-
       for (const element of getTables) {
         const nameTable = element.table_name;
         const descriptionTable = element.table_description;
+        const [descriptionEs, descriptionEn] = descriptionTable.split("\r\n");
         const columns = getColumns.filter(
           (column) => column.table_name === nameTable
         );
-        const columnsWithoutTableName = columns.map(
-          ({ table_name, ...rest }) => rest
-        );
+        const columnsWithDescriptions = columns.map((column) => {
+          const [descriptionEs, descriptionEn] =
+            column.column_description.split("\r\n");
+          return {
+            column_name: column.column_name,
+            descriptionsColumn: {
+              es: descriptionEs,
+              en: descriptionEn,
+            },
+          };
+        });
         result.push({
           nameTable,
-          descriptionTable,
-          columns: columnsWithoutTableName,
+          descriptionsTable: {
+            es: descriptionEs,
+            en: descriptionEn,
+          },
+          columns: columnsWithDescriptions,
         });
       }
 
@@ -100,7 +110,7 @@ export class MssqlRepository implements IMssqlRepository {
       if (result.length === 0) {
         return {
           error:
-            "No se encontraron tablas en la base de datos y/o no tienen descripción",
+            "No tables were found in the database and/or they do not have a description",
         };
       }
 
