@@ -1,4 +1,8 @@
 import { IMssqlRepository } from "@api/mssql/domain/mssql.entity";
+import {
+  CQueryGetColumnsMSSQL,
+  CQueryGetTablesMSSQL,
+} from "@app/utils/constants/Constants";
 import { IMssqlBodyData } from "@app/utils/constants/Interfaces";
 import { Sequelize, QueryTypes } from "sequelize";
 
@@ -36,60 +40,43 @@ export class MssqlRepository implements IMssqlRepository {
         });
 
       const getTables: { table_name: string; table_description: string }[] =
-        await sequelize.query(
-          `
-          SELECT 
-            t.name AS table_name, 
-            p.value AS table_description
-          FROM 
-            sys.tables AS t
-          LEFT JOIN 
-            sys.extended_properties AS p ON t.object_id = p.major_id AND p.name = 'MS_Description'
-          WHERE 
-            p.class = 1 AND -- Class 1 indicates table
-            p.minor_id = 0; -- Minor_id = 0 for the table description
-        `,
-          { type: QueryTypes.SELECT }
-        );
+        await sequelize.query(CQueryGetTablesMSSQL, {
+          type: QueryTypes.SELECT,
+        });
 
       const getColumns: {
         table_name: string;
         column_name: string;
         column_description: string;
-      }[] = await sequelize.query(
-        `
-            SELECT 
-                t.name AS table_name,
-                c.name AS column_name,
-                p.value AS column_description
-            FROM 
-                sys.tables AS t
-            INNER JOIN 
-                sys.columns AS c ON t.object_id = c.object_id
-            LEFT JOIN 
-                sys.extended_properties AS p ON t.object_id = p.major_id AND c.column_id = p.minor_id
-            WHERE 
-                p.class = 1 AND -- Class 1 indicates table
-                p.minor_id > 0; -- Minor_id > 0 for the column description
-            `,
-        { type: QueryTypes.SELECT }
-      );
-
-      // console.log({ getTables, getColumns });
+      }[] = await sequelize.query(CQueryGetColumnsMSSQL, {
+        type: QueryTypes.SELECT,
+      });
 
       for (const element of getTables) {
         const nameTable = element.table_name;
         const descriptionTable = element.table_description;
+        const [descriptionEs, descriptionEn] = descriptionTable.split("\r\n");
         const columns = getColumns.filter(
           (column) => column.table_name === nameTable
         );
-        const columnsWithoutTableName = columns.map(
-          ({ table_name, ...rest }) => rest
-        );
+        const columnsWithDescriptions = columns.map((column) => {
+          const [descriptionEs, descriptionEn] =
+            column.column_description.split("\r\n");
+          return {
+            column_name: column.column_name,
+            descriptionsColumn: {
+              es: descriptionEs,
+              en: descriptionEn,
+            },
+          };
+        });
         result.push({
           nameTable,
-          descriptionTable,
-          columns: columnsWithoutTableName,
+          descriptionsTable: {
+            es: descriptionEs,
+            en: descriptionEn,
+          },
+          columns: columnsWithDescriptions,
         });
       }
 
@@ -100,7 +87,7 @@ export class MssqlRepository implements IMssqlRepository {
       if (result.length === 0) {
         return {
           error:
-            "No se encontraron tablas en la base de datos y/o no tienen descripción",
+            "No tables were found in the database and/or they do not have a description",
         };
       }
 
