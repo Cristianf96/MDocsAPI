@@ -1,14 +1,13 @@
-// enable CORS - Cross Origin Resource Sharing
 const corsOptions = {
-  origin: "*", // Permitir cualquier origen
+  origin: "*",
   credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Permitir todos los métodos
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: [
     "Content-Type",
     "Authorization",
     "X-Requested-With",
     "Accept",
-  ], // Permitir todos los encabezados comunes
+  ],
 };
 
 export { corsOptions };
