@@ -1,5 +1,5 @@
 import jwt, { Secret } from "jsonwebtoken";
-import { ECorsAudApiArray } from "@app/utils/constants/Constants";
+import { CCorsAudApiArray } from "@app/utils/constants/Constants";
 
 const encoder = new TextEncoder();
 export const SecretKey: Secret | Uint8Array = encoder
@@ -21,7 +21,7 @@ export const verifyToken = (
     if (
       typeof decoded !== "string" &&
       typeof decoded.aud === "string" &&
-      ECorsAudApiArray.includes(decoded.aud)
+      CCorsAudApiArray.includes(decoded.aud)
     ) {
       const decodedData = jwt.verify(decoded.data, secretTokenData);
 
