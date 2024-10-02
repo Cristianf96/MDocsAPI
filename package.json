@@ -1,5 +1,5 @@
 {
-  "name": "mdocsapi",
+  "name": "mdocs-api",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -12,7 +12,7 @@
   "author": "Cristian Badillo",
   "developer": "Cristian Badillo https://www.linkedin.com/in/cristian-barragan-ab9149225/",
   "license": "ISC",
-  "description": "",
+  "description": "MDocsAPI es una API RESTful desarrollada con Node.js y TypeScript, diseñada para gestionar y consultar información en una base de datos, generando una respuesta con el diccionario de esta misma.",
   "dependencies": {
     "@types/helmet": "^0.0.48",
     "@types/morgan": "^1.9.9",
@@ -45,5 +45,13 @@
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.6.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cristianf96/MDocsAPI.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Cristianf96/MDocsAPI/issues"
+  },
+  "homepage": "https://github.com/Cristianf96/MDocsAPI#readme"
 }
