@@ -4,9 +4,9 @@ import { Mssql } from "@api/v1.routes";
 
 const routes = Router();
 routes.get("/", (_, res) => {
-  res.send(
-    `Welcome to MDocs API in version ${process.env.npm_package_version}`
-  );
+  res
+    .status(200)
+    .send(`Welcome to MDocs API in version ${process.env.npm_package_version}`);
 });
 
 routes.use("/mssql", Mssql);
