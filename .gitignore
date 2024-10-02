@@ -36,6 +36,3 @@ Thumbs.db
 
 # test Coverage
 coverage/
-
-# Tests
-tests/
