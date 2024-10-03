@@ -47,6 +47,8 @@ export class MssqlRepository implements IMssqlRepository {
       const getColumns: {
         table_name: string;
         column_name: string;
+        column_data_type: string;
+        column_length: string;
         column_description: string;
       }[] = await sequelize.query(CQueryGetColumnsMSSQL, {
         type: QueryTypes.SELECT,
@@ -64,6 +66,8 @@ export class MssqlRepository implements IMssqlRepository {
             column.column_description.split("\r\n");
           return {
             column_name: column.column_name,
+            column_data_type: column.column_data_type,
+            column_length: column.column_length,
             descriptionsColumn: {
               es: descriptionEs,
               en: descriptionEn,
